@@ -51,6 +51,7 @@
 
     <form  id="challengeform">
         <div class="col ">
+            <div th:if="${#lists.isEmpty(bookdata)}">
         <div class="bookinfo row d-none" id ="bookinfos">
             <div class="col" style="text-align: center">
                 <img  src="http://placehold.it/200x200" class="img-thumbnail" id="thumbnail" >
@@ -91,6 +92,52 @@
                 </div>
             </div>
         </div>
+            </div>
+
+
+            <div th:if="${not #lists.isEmpty(bookdata)}" th:attrappend="id=${bookdata.id}" >
+                <div class="row">
+                    <div class="col" style="text-align: center; width: 180px; ">
+                        <img  style = "width: 150px; " th:src="${bookdata.thumbnailImage}" class="img-thumbnail" id="thumbnail" >
+                        <input type="hidden" th:name="${bookdata.thumbnailImage}"  name = "ithumbnail" id="ithumbnail">
+                    </div>
+                    <div class="col"  >
+                        <div class="row">
+                            <div class="col" style="text-align:left;">
+                                <div style="padding-bottom: 10px">
+                                    <p style="border-bottom : 1px solid black; display : inline-block; font-weight:bold;">제목</p>
+                                    <p><input type="text" id="booktitle" readonly style="border :none;" name = "booktitle"  th:value="${bookdata.title}"></p>
+                                </div>
+                                <div style="padding-bottom: 10px" >
+                                    <p style="border-bottom : 1px solid black; display : inline-block; font-weight:bold;">작가</p>
+                                    <p>
+                                        <input type="text" id="authors" readonly style="border :none;"  th:value="${bookdata.author}">
+                                    </p>
+                                </div>
+                                <div style="padding-bottom: 10px" >
+                                    <p style="border-bottom : 1px solid black; display : inline-block; font-weight:bold;">출판사</p>
+                                    <p >
+                                        <input type="text" readonly style="border :none;"  id="publisher"  th:value="${bookdata.publisher}">
+                                    </p>
+                                </div>
+                                <div style="padding-bottom: 10px" >
+                                    <p style="border-bottom : 1px solid black; display : inline-block; font-weight:bold;">isbn</p>
+                                    <p>
+                                        <input type="text" readonly style="border :none;" name = "bookisbn" id="bookisbn"  th:value="${bookdata.isbn}">
+                                    </p>
+                                </div>
+                                <div style="padding-bottom: 10px" >
+                                    <p style="border-bottom : 1px solid black; display : inline-block; font-weight:bold;">번역자</p>
+                                    <p>
+                                        <input type="text" id="trans" readonly style="border :none;"  th:value="${bookdata.translator}">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <div class = "row" style="padding-top: 5%;">
                 <div class="col">도전 날짜</div>
@@ -196,6 +243,7 @@
             if(e.charCode === 13) {
                 e.preventDefault();
                 bookSearch();
+                addBook();
             }
         });
         function bookSearch(page){
@@ -254,6 +302,7 @@
 
 
 
+
                                         html += "<li class='list-group-item'>";
                                         html += "<div class='row'>";
                                         html += "<div class='col' >"
@@ -270,7 +319,7 @@
                                             + this.publisher
                                                 +"</div>"
                                                 + "<div class = col style = 'left : 12%;'>"
-                                            +"<a href='javascript:void(0);' onclick='addBookmark("+ititle+","+iauthor+","+ipublisher+","+ithumbnail+","+isbn+","+itrans+")'  ><span class='bookmarkicon' name='bookmarks' id= 'bookmarks' data-title='"+ititle+"' data-author='"+iauthor+"' data-publisher='"+ipublisher+"' data-thumbnail='"+ithumbnail+"' data-isbn='"+isbn+"' data-trans='"+itrans+"'></span></a>"
+                                            +"<a href='javascript:void(0);' onclick='addBook("+ititle+","+iauthor+","+ipublisher+","+ithumbnail+","+isbn+","+itrans+"),addBookmark("+ititle+","+iauthor+","+ipublisher+","+ithumbnail+","+isbn+","+itrans+")'  ><span class='bookmarkicon' name='bookmarks' id= 'bookmarks' data-title='"+ititle+"' data-author='"+iauthor+"' data-publisher='"+ipublisher+"' data-thumbnail='"+ithumbnail+"' data-isbn='"+isbn+"' data-trans='"+itrans+"'></span></a>"
                                             + "</div>"
                                             + "</div></li>";
                                     });
@@ -373,14 +422,26 @@
 
         <script>
 
-        function addBook() {
+        function addBook(ititle, iauthor, ipublisher, ithumbnail, isbn, itrans) {
 
-            var booktitle = document.getElementById('bookmarks').getAttribute('data-title');
-            var thumbnail = document.getElementById('bookmarks').getAttribute('data-thumbnail');
-            var authors = document.getElementById('bookmarks').getAttribute('data-author');
-            var publisher = document.getElementById('bookmarks').getAttribute('data-publisher');
-            var isbn = document.getElementById('bookmarks').getAttribute('data-isbn');
-            var trans = document.getElementById('bookmarks').getAttribute('data-trans');
+            var booktitle = ititle;
+            var authors = iauthor;
+            var publisher = ipublisher;
+            var thumbnail = ithumbnail;
+            var isbn = isbn;
+            var trans = itrans;
+
+            // var arrayData = new array;
+
+            // $("input[data]").each(function () {
+
+            // var book = document.getElementById("search_form");
+            // var booktitle = book.booktitle.value;
+            // var thumbnail = book.ithumbnail.value;
+            // var authors = book.authors.value;
+            // var publisher = book.publisher.value;
+            // var isbn = book.bookisbn.value;
+            // var trans = book.trans.value;
 
             console.log(booktitle);
             console.log(thumbnail);
@@ -398,22 +459,24 @@
                 translator: trans
             }
 
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
 
-            var jsonData = JSON.stringify(data);
-            $.ajax({
-                type: "post",
-                url: "/api/books/add",
-                data: jsonData,
-                contentType: "application/json",
-                success: function (res) {
-                    console.log(res);
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                },
-            })
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                var jsonData = JSON.stringify(data);
+                $.ajax({
+                    type: "post",
+                    url: "/api/books/add",
+                    data: jsonData,
+                    contentType: "application/json",
+                    success: function (res) {
+                        console.log(res);
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                })
+            // })
 
             }
 
@@ -472,7 +535,7 @@
                         xhr.setRequestHeader(header, token);
                     },
                     error: function () {
-                        alert("등록 에러.");
+                        alert("다시 등록해주세요");
                     }
                 })
 

@@ -1,9 +1,11 @@
 package com.twelvebooks.twelvebook.controller;
 
+import com.twelvebooks.twelvebook.domain.Book;
 import com.twelvebooks.twelvebook.domain.Bookmark;
 import com.twelvebooks.twelvebook.domain.User;
 import com.twelvebooks.twelvebook.repository.BookmarkRepository;
 import com.twelvebooks.twelvebook.repository.UserRepository;
+import com.twelvebooks.twelvebook.service.BookService;
 import com.twelvebooks.twelvebook.service.BookmarkService;
 import com.twelvebooks.twelvebook.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,9 @@ public class BookmarkController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    BookService bookService;
+
     @GetMapping("/list")
     public String bookmarkList(Model model, Principal principal){
 
@@ -48,15 +53,49 @@ public class BookmarkController {
         return "bookmark/list";
     }
 
+    @GetMapping("/{id}")
+    public String sendBookmark(@PathVariable(name="id")long id, Model model, Principal principal){
 
-//    @GetMapping("/list")
-//    public String bookmarklist(Model model, Principal principal) {
-//        User user = userService.getUserByEmail(principal.getName());
-//        User username = userService.getUserById(user.getId());
-//        List<Bookmark> bookmarks = bookmarkService.selectAllByUserId(user.getId());
-//        model.addAttribute("username", username);
-//        model.addAttribute("bookmarks",bookmarks);
-//
-//        return "bookmark/list";
-//    }
+        User user = userService.getUserByEmail(principal.getName());
+
+
+        Bookmark bookmark = bookmarkService.getBookmarkById(id, user.getId());
+
+        if(bookmark !=null) {
+
+            System.out.println("북마크의" + bookmark.getIsbn());
+
+            Book book = new Book();
+            Book checkbook = bookService.getBookdataByIsbn(bookmark.getIsbn());
+
+            System.out.println("체크북의" + checkbook.getIsbn());
+
+            if (checkbook != null) {
+
+
+                book.setId(checkbook.getId());
+                book.setIsbn(checkbook.getIsbn());
+                book.setTitle(checkbook.getTitle());
+                book.setAuthor(checkbook.getAuthor());
+                book.setPublisher(checkbook.getPublisher());
+                book.setTranslator(checkbook.getTranslator());
+                book.setThumbnailImage(checkbook.getThumbnailImage());
+
+                model.addAttribute("bookdata", book);
+
+                Bookmark bookmarks = bookmarkService.getBookmarkbyIsbnUser(checkbook.getIsbn(), user.getId());
+                bookmarkService.deleteBookmark(bookmarks.getId());
+
+            }
+
+
+        }
+        else{
+
+            return "index";
+        }
+
+
+    return "challenges/addform";
+    }
 }

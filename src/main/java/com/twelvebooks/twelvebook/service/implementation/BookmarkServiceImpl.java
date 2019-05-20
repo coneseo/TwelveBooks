@@ -18,7 +18,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     BookmarkRepository bookmarkRepository;
 
     @Override
-    public List<Bookmark> bookmarkList(Long id) {
+    public List<Bookmark> bookmarkList(long id) {
 
         List<Bookmark> bookmarks  = bookmarkRepository.getBookmarks(id);
         return bookmarks;
@@ -27,14 +27,14 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public Bookmark bookmarkAdd(Bookmark bookmark) {
+    public Bookmark addBookmark(Bookmark bookmark) {
         return bookmarkRepository.save(bookmark);
     }
 
 
     @Override
     @Transactional
-    public void bookmarkDelete(Long id) {
+    public void deleteBookmark(long id) {
         bookmarkRepository.deleteById(id);
     }
 
@@ -54,6 +54,13 @@ public class BookmarkServiceImpl implements BookmarkService {
     public Bookmark getBookmarkbyIsbnUser(String isbn, long id) {
         return bookmarkRepository.getBookmarkbyIsbnUser(isbn, id);
     }
+
+    @Override
+    public Bookmark getBookmarkById(long id, long userid) {
+        return bookmarkRepository.getBookmarkById(id,userid);
+    }
+
+
 
     //    @Override
 //    @Transactional(readOnly = true)
