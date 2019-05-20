@@ -23,22 +23,29 @@ public class BookAPIController {
 
         String checkisbn = bookDto.getIsbn();
 
-        System.out.println(checkisbn);
+        if(checkisbn != null) {
 
-        Book check = bookService.getBookByIsbn(checkisbn);
+            System.out.println(checkisbn);
 
-        System.out.println(check);
+            Book check = bookService.getBookByIsbn(checkisbn);
 
-        if(check == null){
-            Book book = new Book();
+            System.out.println(check);
 
-            BeanUtils.copyProperties(bookDto, book);
+            if (check == null) {
+                Book book = new Book();
 
-            bookService.addBook(book);
+                BeanUtils.copyProperties(bookDto, book);
+
+                bookService.addBook(book);
+            } else {
+
+            }
+            return "challenges/addform";
+
         }
-        else{
 
+        else {
+            return "pass";
         }
-        return "challenges/addform";
     }
 }
