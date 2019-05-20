@@ -53,13 +53,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/notices/delete").hasAnyRole("ADMIN")
                 .antMatchers("/notices/modify/**").hasAnyRole("ADMIN")
 
-                .antMatchers("/api/bookmark/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/bookmarks/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/bookmark/list").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/bookmark/add").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/api/bookmark/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/bookmark/delete").hasAnyRole("USER", "ADMIN")
-
-                .antMatchers("/api/book/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/bookmark/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/bookmarks/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/books/**").hasAnyRole("USER", "ADMIN")
 
                 .antMatchers("/challenges/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().fullyAuthenticated()
@@ -78,6 +79,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("passwd")
                 .defaultSuccessUrl("/",true)
                 .failureUrl("/users/login?fail=true");
+
+
+
+
+
+
+
         http.headers().frameOptions().sameOrigin();
     }
 }

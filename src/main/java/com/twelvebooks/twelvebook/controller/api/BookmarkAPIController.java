@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -52,7 +54,7 @@ public class BookmarkAPIController {
     @DeleteMapping(value = "/{bookmarkId}")
     public int delete(@PathVariable(value = "bookmarkId") Long id, Principal principal){
         User user = userService.getUserByEmail(principal.getName());
-        bookmarkService.bookmarkDelete(id);
+        bookmarkService.deleteBookmark(id);
 
         return bookmarkService.bookmarkList(user.getId()).size();
     }
@@ -71,25 +73,31 @@ public class BookmarkAPIController {
 
         System.out.println("체크isbn" + isbn);
 
-//        Bookmark check = bookmarkService.getBookmarkbyIsbnUser(isbn, user.getId());
-
-
         Optional<Bookmark> check = Optional.ofNullable(bookmarkService.getBookmarkbyIsbnUser(isbn, user.getId()));
 
         System.out.println("체크체크" + check);
 
         if(!check.isPresent()){
 
-//        if (check == null) {
-            Bookmark bookmark = new Bookmark();
-            bookmark.setUser(user);
-            Book book = bookService.getBookByIsbn(isbn);
 
-            bookmark.setIsbn(isbn);
+            Bookmark bookmark = new Bookmark();
+
+            System.out.println("북체크체크" + bookmark.getUser());
+
+            bookmark.setUser(user);
+
+            System.out.println("북체크체크" + bookmark.getUser());
+
+            Book book = bookService.getBookdataByIsbn(isbn);
+
+            bookmark.setBook(book);
+            bookmark.setIsbn(book.getIsbn());
             bookmark.setThumbnailImage(book.getThumbnailImage());
             bookmark.setBookTitle(book.getTitle());
 
-            bookmarkService.bookmarkAdd(bookmark);
+            System.out.println("북체크체크" + book.getId());
+
+            bookmarkService.addBookmark(bookmark);
             return "save";
 
 
@@ -100,16 +108,16 @@ public class BookmarkAPIController {
         }
     }
 
+//    @GetMapping(value = "/{bookmarkId}")
+//    public String sendBookmark(@RequestParam(name = "bookmarkId") Long id, Principal principal, Model model
+//    ){
+//
+//
+//
+//        return "ok";
+//    }
 
-    @PostMapping("/send/{isbnid}")
-    public String sendBookmark(
-            @RequestParam(name = "isbn") String isbn
-    ){
-        Bookmark bookmark = new Bookmark();
-        bookmark.setIsbn(isbn);
-        bookmarkService.bookmarkAdd(bookmark);
-        return "challenges/addform";
-    }
+
 
 
 }

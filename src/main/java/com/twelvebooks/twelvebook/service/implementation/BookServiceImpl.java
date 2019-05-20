@@ -30,4 +30,13 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(book);
     }
 
+
+    @Override
+    public Book getBookdataByIsbn(String isbn) {
+        Book book = bookRepository.getBookByIsbn(isbn);
+
+        return book;
+    }
+
+
 }

@@ -28,11 +28,12 @@
                         checkedAny = true;
                         var check = $(this).val();
                         $.ajax({
-                            url: '/api/bookmark/' + check,
+                            url: '/api/bookmarks/' + check,
                             method: 'delete',
                             success: function (data) {
                                 document.getElementById(check).remove();
                                 if (data == 0) {
+                                    window.location.href= "/bookmark/list/"
                                 }
                             }
                         });
@@ -57,6 +58,7 @@
         function deleteicon(deleteiconid) {
             var confirm_val = confirm("정말 삭제하시겠습니까?");
             if(confirm_val) {
+
                 $.ajax({
                     url: '/api/bookmarks/' + deleteiconid,
                     method: 'delete',
@@ -70,6 +72,69 @@
             }
         };
     </script>
+
+
+    <script>
+        // var token = $("meta[name='_csrf']").attr("content");
+        // var header = $("meta[name='_csrf_header']").attr("content");
+        // $(function () {
+        //     $(document).ajaxSend(function (e, xhr, options) {
+        //         xhr.setRequestHeader(header, token);
+        //     });
+
+
+            function sendBookmark(bookmarkId) {
+
+
+                var confirm_val = confirm("정말 등록하시렵니까?");
+                if (confirm_val) {
+
+
+                    // var bookmarkId = $(this).val();
+
+                    console.log(bookmarkId);
+
+
+
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
+
+                    // $(document).ajaxSend(function(e, xhr, options) {
+                    //     xhr.setRequestHeader(header, token);
+                    // });
+                    $.ajax({
+                        url: '/api/bookmarks/' + bookmarkId,
+                        method: 'get',
+                        // data: JSON.stringify(json),
+                        // dataType : 'json',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success: function (data) {
+
+                            if (data == "ok") {
+                                // document.getElementById(bookmarkid).remove();
+                                window.location.href = "challenges/addform/"
+                            }
+
+                        }
+                        ,
+
+                        beforeSend : function(xhr){
+                            xhr.setRequestHeader(header, token);
+                        },
+
+                        error: function () {
+                            alert("에러닷");
+                        }
+                    });
+                }
+
+            }
+        // });
+    </script>
+
+
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
 
@@ -96,12 +161,9 @@
                 <tr th:if="${not #lists.isEmpty(bookmarks)}" th:attrappend="id=${bookmarks.id}" th:each="bookmarks : ${bookmarks}">
                     <td style="text-align: center; vertical-align: middle"><input type='checkbox' name="check" id="check" th:value="${bookmarks.id}" /></td>
                     <td style="text-align: center;vertical-align: middle" ><img th:src="${bookmarks.thumbnailImage}" style = "width :150px; "></td>
-                    <td style ="vertical-align: middle;text-align: center;padding-right: 15%"><a style="color:black; font-size: large"  th:text="${bookmarks.bookTitle}" th:href="@{'/api/challenges/addform/' + ${bookmarks.book.isbn}}">bookTitle</a></td>
-                    <!--<td style="vertical-align: middle"><a th:href="@{'/api/bookmark/delete/' + ${bookmarks.id}}"><span class ="css-xicon" id="deleteicon" name="deleteicon" ></span></a></td>-->
+                    <!--<td style ="vertical-align: middle;text-align: center;padding-right: 15%"><a  href="javascript:void[0];" th:onclick= "'javascript:sendBookmark('+${bookmarks.id}+')'" style="color:black;" ><span style=" font-size: large"   name="sendbookmark" id="bookmarkid" th:value="${bookmarks.id}" th:text="${bookmarks.bookTitle}">bookTitle</span></a></td>-->
+                    <td style ="vertical-align: middle;text-align: center;padding-right: 15%"><a  th:href="@{'/bookmark/' + ${bookmarks.id}}" style="color:black;" ><span style=" font-size: large"   name="sendbookmark" id="bookmarkid" th:value="${bookmarks.id}" th:text="${bookmarks.bookTitle}">bookTitle</span></a></td>
                     <td style="vertical-align: middle"><a href="javascript:void[0];" th:onclick= "'javascript:deleteicon('+${bookmarks.id}+')'" ><span class ="css-xicon" name="deleteicon" id="deleteiconid" th:value="${bookmarks.id}" ></span></a></td>
-                    <!--<td style="vertical-align: middle"><button type="button" class ="css-xicon" name="deleteicon" id="deleteiconid" th:value="${bookmarks.id}" ></button></td>-->
-                    <!--<td style="vertical-align: middle"><button class ="css-xicon" onclick="deleteicon" id = "id" th:value="${bookmarks.id}"  ></button></td>-->
-                    <!--<td style ="vertical-align: middle;text-align: center;"><button  type="button" class ="css-xicon"  id="deleteicon" name="deleteicon" th:data="${bookmarks.id}"></button></td>-->
                 </tr>
                 </tbody>
             </table>
@@ -118,7 +180,5 @@
 
 </div>
 
-<script>
-</script>
 </body>
 </html>
