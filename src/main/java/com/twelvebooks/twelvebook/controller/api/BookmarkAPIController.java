@@ -108,13 +108,50 @@ public class BookmarkAPIController {
         }
     }
 
-//    @GetMapping(value = "/{bookmarkId}")
-//    public String sendBookmark(@RequestParam(name = "bookmarkId") Long id, Principal principal, Model model
-//    ){
+//    @GetMapping
+//    public String sendBookmark(@PathVariable(name="id")long id, Model model, Principal principal){
+//
+//        User user = userService.getUserByEmail(principal.getName());
 //
 //
+//        Bookmark bookmark = bookmarkService.getBookmarkById(id, user.getId());
 //
-//        return "ok";
+//        if(bookmark !=null) {
+//
+//            System.out.println("북마크의" + bookmark.getIsbn());
+//
+//            Book book = new Book();
+//            Book checkbook = bookService.getBookdataByIsbn(bookmark.getIsbn());
+//
+//            System.out.println("체크북의" + checkbook.getIsbn());
+//
+//            if (checkbook != null) {
+//
+//
+//                book.setId(checkbook.getId());
+//                book.setIsbn(checkbook.getIsbn());
+//                book.setTitle(checkbook.getTitle());
+//                book.setAuthor(checkbook.getAuthor());
+//                book.setPublisher(checkbook.getPublisher());
+//                book.setTranslator(checkbook.getTranslator());
+//                book.setThumbnailImage(checkbook.getThumbnailImage());
+//
+//                model.addAttribute("bookdata", book);
+//
+//                Bookmark bookmarks = bookmarkService.getBookmarkbyIsbnUser(checkbook.getIsbn(), user.getId());
+//                bookmarkService.deleteBookmark(bookmarks.getId());
+//
+//            }
+//
+//
+//        }
+//        else{
+//
+//            return "index";
+//        }
+//
+//
+//        return "challenges/addform";
 //    }
 
 
