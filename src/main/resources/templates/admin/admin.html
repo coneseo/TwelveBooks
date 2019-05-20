@@ -32,6 +32,13 @@
                             </span></td>
                             <td><span th:text="${users.name}">name</span></td>
                             <td><span th:text="${#dates.format(users.regdate, 'yyyy/MM/dd')}">regdate</span></td>
+                            <td>
+                                <select name="roleName">
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="USER">USER</option>
+                                    <option value="BANNED">BANNED</option>
+                                </select>
+                            </td>
                             <td><button class="btn btn-dark" style="width: 100px;" onclick="modifyRoles()">권한조정</button></td>
                             <td><button class="btn btn-dark" style="width: 100px;">회원정지</button></td>
                         </tr>

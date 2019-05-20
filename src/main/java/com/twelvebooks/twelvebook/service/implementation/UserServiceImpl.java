@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
+
 
     @Autowired
     private UserRepository userRepository;
@@ -54,5 +56,16 @@ public class UserServiceImpl implements UserService {
         users = userRepository.getUsers();
         return users;
     }
+
+    @Override
+    @Transactional
+    public String modifyUserRole(User user, Role role) {
+        String result;
+        user.addUserRole(role);
+
+
+        return null;
+    }
+
 
 }
