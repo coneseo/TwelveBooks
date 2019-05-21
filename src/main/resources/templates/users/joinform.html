@@ -99,6 +99,8 @@
         $(document).ready(function () {
 
             $('form input[name="email"]').blur(function () {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
                 var email = $(this).val();
                 var userData = {'email': email};
                 var jsonData = JSON.stringify(userData);
@@ -114,26 +116,17 @@
                         data: jsonData,
                         async: false,
                         contentType: "application/json",
-                        error: function (err) {
-                            console.log(err.toString());
-                            alert("서버가 응답하지 않습니다.");
-                            return false;
-                        },
                         beforeSend: function (xhr) {
                             xhr.setRequestHeader(header, token);
                         },
+                        error: function () {
+                            $('.msg').hide();
+                            $('.duplicate').show();
+                        },
                         success: function (data) {
                             console.log(data);
-
-                            if (data == 0) {
-                                $('.msg').hide();
-                                $('.notduplicate').show();
-                            } else if (data == 1) {
-                                $('.msg').hide();
-                                $('.duplicate').show();
-                            } else {
-                                alert("에러가 발생했습니다!");
-                            }
+                            $('.msg').hide();
+                            $('.notduplicate').show();
                         }
 
                     })
