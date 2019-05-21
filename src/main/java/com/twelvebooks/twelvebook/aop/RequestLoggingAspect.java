@@ -58,7 +58,7 @@ public class RequestLoggingAspect {
     {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        log.error("Exception Occured at {} with {}", request.getRemoteHost(), ex);
+        log.error("Exception Occured at {} with {}", request.getRequestURI(), ex);
     }
 
 }

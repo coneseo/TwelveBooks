@@ -55,6 +55,17 @@ public class DiaryAPIController {
         return new ResponseEntity<>(postReviewResultDto, HttpStatus.OK);
     }
 
+    @PutMapping
+    public ResponseEntity<PostReviewResultDto> modifyReview(@RequestBody DiaryDto diaryDto){
+        PostReviewResultDto postReviewResultDto = new PostReviewResultDto();
+
+        System.out.println("api" + diaryDto.getId());
+        int update = diaryService.updateDiary(diaryDto);
+
+        postReviewResultDto.setResult("수정완료");
+        return new ResponseEntity<>(postReviewResultDto, HttpStatus.OK);
+    }
+
     @GetMapping
     public List<Diary> getDiariesByChallengeId(@RequestParam(name = "challengeId") long id){
         return null;

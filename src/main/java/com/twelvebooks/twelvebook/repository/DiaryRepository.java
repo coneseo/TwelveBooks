@@ -2,6 +2,7 @@ package com.twelvebooks.twelvebook.repository;
 
 import com.twelvebooks.twelvebook.domain.Diary;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -23,4 +24,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     public int diaryCheck(@Param("id") long id,
                           @Param("days") int days);
 
+    @Modifying
+    @Query("UPDATE Diary  d SET d.content = :content WHERE d.id =:id")
+    public int updateDiary(@Param("id")long id,
+                           @Param("content") String content);
 }
