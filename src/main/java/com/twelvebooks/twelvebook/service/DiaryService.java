@@ -17,4 +17,6 @@ public interface DiaryService {
     public void deleteDiary(Diary diary);
 
     public Diary getDiaryById(Long id);
+
+    public int updateDiary(DiaryDto diaryDto);
 }

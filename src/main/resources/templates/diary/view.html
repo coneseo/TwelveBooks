@@ -18,8 +18,8 @@
                 <div th:id="${diary.id}">
                     <h4><b>Day: <span th:text="${diary.days}"></span></b></h4>
                     <div>
-                        <textarea disabled class="form-control"  style="height: 125px; width: 65%; ">[[${diary.content}]]</textarea>
-                        <button class="btn btn-dark" th:onclick="'javascript:modifiable(' + ${diary.id} + ');'">수정</button>
+                        <textarea class="form-control"th:id="${diary.id}+'1'"  style="height: 125px; width: 65%; ">[[${diary.content}]]</textarea>
+                        <button class="btn btn-dark" th:onclick="'javascript:modifiable(' + ${diary.id}+1 + ','+ ${diary.days}+');'">수정</button>
                         <button class="btn btn-dark" th:onclick="'javascript:deleteReview(' + ${diary.id} + ');'">삭제</button>
                     </div>
                 </div>
@@ -28,8 +28,51 @@
     </div>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        function modifiable(id) {
-            document.getElementById(id).disabled = false;
+        $(document).ready(function() {
+            $('.form-control').attr('disabled','disabled');
+        });
+
+        function modifiable(id, days) {
+            if(document.getElementById(id).disabled ){
+                document.getElementById(id).disabled = false;
+            }else{
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                var newcontent = document.getElementById(id).value;
+                var diaryid =  id.toString().substr(-1);
+                var days = days;
+
+                var data = {
+                    content       : newcontent,
+                    id      : diaryid,
+                    days         : days
+                };
+
+                var jsonData = JSON.stringify(data);
+
+                $.ajax({
+                    type: 'put',
+                    url: '/api/diaries',
+                    data: jsonData,
+                    async: true,
+                    contentType: "application/json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    error: function () {
+                        alert("일지는 30자 이상 작성해주세요. ");
+                        return false;
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        alert("일지를 수정했습니다.");
+
+                    }
+                })
+
+                document.getElementById(id).disabled = true;
+            }
         }
 
         function deleteReview(id) {

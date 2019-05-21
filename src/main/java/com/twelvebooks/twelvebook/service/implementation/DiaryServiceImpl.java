@@ -72,4 +72,14 @@ public class DiaryServiceImpl implements DiaryService {
         diary = diaryRepository.getOne(id);
         return diary;
     }
+
+    @Override
+    @Transactional
+    public int updateDiary(DiaryDto diaryDto) {
+        System.out.println(diaryDto.getId());
+        System.out.println(diaryDto.getContent());
+        diaryRepository.updateDiary(diaryDto.getId(), diaryDto.getContent());
+
+        return 0;
+    }
 }
