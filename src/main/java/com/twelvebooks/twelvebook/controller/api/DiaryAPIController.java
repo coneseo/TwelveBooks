@@ -37,7 +37,7 @@ public class DiaryAPIController {
         int count = diaryService.addDiary(diaryDto);
         if(count > 0){
             postReviewResultDto.setResult("이미 작성된 일지 있음");
-            return new ResponseEntity<>(postReviewResultDto, HttpStatus.OK);
+            return new ResponseEntity<>(postReviewResultDto, HttpStatus.CONFLICT);
         }
         postReviewResultDto.setResult("작성완료");
         return new ResponseEntity<>(postReviewResultDto, HttpStatus.OK);
