@@ -53,5 +53,13 @@ public class RequestLoggingAspect {
                     params, request.getRemoteHost(), end - start);
         }
     }
+    @AfterThrowing (pointcut = "execution(* com.twelvebooks.twelvebook.controller.api.*.*(..))", throwing = "ex")
+    public void logAfterThrowingAllMethods(Exception ex) throws Throwable
+    {
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        log.error("Exception Occured at {} with {}", request.getRemoteHost(), ex);
+    }
+
 }
 
