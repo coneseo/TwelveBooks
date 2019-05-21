@@ -156,9 +156,8 @@
                 data: jsonData,
                 async: true,
                 contentType: "application/json",
-                error: function (err) {
-                    console.log(err.toString());
-                    alert("서버가 응답하지 않습니다.");
+                error: function () {
+                    alert("이미 일지를 작성하셨습니다");
                     return false;
                 },
                 beforeSend: function (xhr) {
@@ -167,7 +166,7 @@
                 success: function (data) {
                     console.log(data);
                     document.getElementById(idtest).value = "";
-                    alert(data.result);
+                    alert("일지를 작성했습니다.");
 
                 }
             })

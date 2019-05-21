@@ -15,10 +15,10 @@
             <span style="padding-left: 10%; font-size: 35px;" th:text="${challenge.booksTitle}";></span>
             <span style="padding-left: 2%; font-size: 35px;" th:text="${challenge.bookStatus}";></span>
             <div th:each="diary : ${diary}">
-                <div>
+                <div th:id="${diary.id}">
                     <h4><b>Day: <span th:text="${diary.days}"></span></b></h4>
                     <div>
-                        <textarea disabled class="form-control" th:id="${diary.id}" th:value="${diary.id}" style="height: 125px; width: 65%; ">[[${diary.content}]]</textarea>
+                        <textarea disabled class="form-control"  style="height: 125px; width: 65%; ">[[${diary.content}]]</textarea>
                         <button class="btn btn-dark" th:onclick="'javascript:modifiable(' + ${diary.id} + ');'">수정</button>
                         <button class="btn btn-dark" th:onclick="'javascript:deleteReview(' + ${diary.id} + ');'">삭제</button>
                     </div>
