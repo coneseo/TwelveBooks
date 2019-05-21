@@ -7,6 +7,7 @@ import com.twelvebooks.twelvebook.domain.Bookmark;
 import com.twelvebooks.twelvebook.domain.User;
 import com.twelvebooks.twelvebook.dto.BookDto;
 import com.twelvebooks.twelvebook.dto.BookmarkDto;
+import com.twelvebooks.twelvebook.dto.BookmarkResultDto;
 import com.twelvebooks.twelvebook.repository.BookmarkRepository;
 import com.twelvebooks.twelvebook.repository.UserRepository;
 import com.twelvebooks.twelvebook.service.BookService;
@@ -52,11 +53,12 @@ public class BookmarkAPIController {
     private BookService bookService;
 
     @DeleteMapping(value = "/{bookmarkId}")
-    public int delete(@PathVariable(value = "bookmarkId") Long id, Principal principal){
+    public ResponseEntity<BookmarkResultDto> delete(@PathVariable(value = "bookmarkId") Long id, Principal principal){
         User user = userService.getUserByEmail(principal.getName());
+        BookmarkResultDto bookmarkResultDto = new BookmarkResultDto();
         bookmarkService.deleteBookmark(id);
 
-        return bookmarkService.bookmarkList(user.getId()).size();
+        return new ResponseEntity<>(bookmarkResultDto, HttpStatus.OK);
     }
 
 
@@ -64,10 +66,10 @@ public class BookmarkAPIController {
 
 
     @PostMapping
-    public String addBookmark(@RequestBody BookmarkDto bookmarkDto, Principal principal) {
+    public ResponseEntity<BookmarkResultDto> addBookmark(@RequestBody BookmarkDto bookmarkDto, Principal principal) {
 
         User user = userService.getUserByEmail(principal.getName());
-
+        BookmarkResultDto bookmarkResultDto = new BookmarkResultDto();
 
         String isbn = bookmarkDto.getIsbn();
 
@@ -98,61 +100,61 @@ public class BookmarkAPIController {
             System.out.println("북체크체크" + book.getId());
 
             bookmarkService.addBookmark(bookmark);
-            return "save";
+            bookmarkResultDto.setResultMessage("save");
+            return new ResponseEntity<>(bookmarkResultDto, HttpStatus.OK);
 
 
         }
         else {
 
-            return "exist";
+            bookmarkResultDto.setResultMessage("exist");
+            return new ResponseEntity<>(bookmarkResultDto, HttpStatus.CONFLICT);
         }
     }
 
-//    @GetMapping
-//    public String sendBookmark(@PathVariable(name="id")long id, Model model, Principal principal){
-//
-//        User user = userService.getUserByEmail(principal.getName());
-//
-//
-//        Bookmark bookmark = bookmarkService.getBookmarkById(id, user.getId());
-//
-//        if(bookmark !=null) {
-//
-//            System.out.println("북마크의" + bookmark.getIsbn());
-//
-//            Book book = new Book();
-//            Book checkbook = bookService.getBookdataByIsbn(bookmark.getIsbn());
-//
-//            System.out.println("체크북의" + checkbook.getIsbn());
-//
-//            if (checkbook != null) {
-//
-//
-//                book.setId(checkbook.getId());
-//                book.setIsbn(checkbook.getIsbn());
-//                book.setTitle(checkbook.getTitle());
-//                book.setAuthor(checkbook.getAuthor());
-//                book.setPublisher(checkbook.getPublisher());
-//                book.setTranslator(checkbook.getTranslator());
-//                book.setThumbnailImage(checkbook.getThumbnailImage());
-//
-//                model.addAttribute("bookdata", book);
-//
-//                Bookmark bookmarks = bookmarkService.getBookmarkbyIsbnUser(checkbook.getIsbn(), user.getId());
-//                bookmarkService.deleteBookmark(bookmarks.getId());
-//
-//            }
-//
-//
-//        }
-//        else{
-//
-//            return "index";
-//        }
-//
-//
-//        return "challenges/addform";
-//    }
+    @GetMapping(value = "/{bookmarkId}")
+    public ResponseEntity<BookmarkResultDto> sendBookmark(@PathVariable(name="bookmarkId")long id, Model model, Principal principal){
+
+        User user = userService.getUserByEmail(principal.getName());
+        Bookmark bookmark = bookmarkService.getBookmarkById(id, user.getId());
+        BookmarkResultDto bookmarkResultDto = new BookmarkResultDto();
+
+        if(bookmark !=null) {
+            System.out.println("북마크의" + bookmark.getIsbn());
+            Book book = new Book();
+            Book checkbook = bookService.getBookdataByIsbn(bookmark.getIsbn());
+            System.out.println("체크북의" + checkbook.getIsbn());
+
+            if (checkbook != null) {
+                book.setId(checkbook.getId());
+                book.setIsbn(checkbook.getIsbn());
+                book.setTitle(checkbook.getTitle());
+                book.setAuthor(checkbook.getAuthor());
+                book.setPublisher(checkbook.getPublisher());
+                book.setTranslator(checkbook.getTranslator());
+                book.setThumbnailImage(checkbook.getThumbnailImage());
+
+//                httpSession.setAttribute("bookdata", book);
+                BookDto bookDto = new BookDto();
+                BeanUtils.copyProperties(book, bookDto);
+                model.addAttribute("bookdata", bookDto);
+
+
+                Bookmark bookmarks = bookmarkService.getBookmarkbyIsbnUser(checkbook.getIsbn(), user.getId());
+                bookmarkService.deleteBookmark(bookmarks.getId());
+
+            }
+
+
+        }
+        else{
+
+            return new ResponseEntity<>(bookmarkResultDto, HttpStatus.CONFLICT);
+        }
+
+
+        return new ResponseEntity<>(bookmarkResultDto, HttpStatus.OK);
+    }
 
 
 

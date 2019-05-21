@@ -3,10 +3,14 @@ package com.twelvebooks.twelvebook.controller.api;
 
 import com.twelvebooks.twelvebook.domain.Book;
 import com.twelvebooks.twelvebook.dto.BookDto;
+import com.twelvebooks.twelvebook.dto.BookResultDto;
+import com.twelvebooks.twelvebook.dto.BookmarkResultDto;
 import com.twelvebooks.twelvebook.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,8 +23,8 @@ public class BookAPIController {
     private BookService bookService;
 
     @PostMapping("/add")
-    public String bookAdd(@RequestBody BookDto bookDto){
-
+    public ResponseEntity<BookResultDto> addBook(@RequestBody BookDto bookDto){
+        BookResultDto bookmarkResultDto = new BookResultDto();
         String checkisbn = bookDto.getIsbn();
 
         if(checkisbn != null) {
@@ -40,12 +44,14 @@ public class BookAPIController {
             } else {
 
             }
-            return "challenges/addform";
+            bookmarkResultDto.setResult("save");
+            return new ResponseEntity<>(bookmarkResultDto, HttpStatus.OK);
 
         }
 
         else {
-            return "pass";
+            bookmarkResultDto.setResult("conflict");
+            return new ResponseEntity<>(bookmarkResultDto, HttpStatus.CONFLICT);
         }
     }
 }

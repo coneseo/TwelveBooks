@@ -507,17 +507,10 @@
                     url: "/api/bookmarks" ,
                     data: jsonData,
                     contentType: "application/json",
-                    success: function (res) {
-                        console.log(res);
+                    success: function (resultMessage) {
+                        console.log(resultMessage);
 
-                        if (res == "save") {
                             alert("북마크에 저장했습니다.")
-                        } else if (res == "exist") {
-
-                            alert("이미 저장된 책입니다.")
-                        }
-
-
                     },
 
 
@@ -525,7 +518,7 @@
                         xhr.setRequestHeader(header, token);
                     },
                     error: function () {
-                        alert("다시 등록해주세요");
+                        alert("이미 저장된 책입니다.")
                     }
                 })
 

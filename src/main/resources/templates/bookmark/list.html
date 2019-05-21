@@ -85,45 +85,27 @@
 
             function sendBookmark(bookmarkId) {
 
-
                 var confirm_val = confirm("정말 등록하시렵니까?");
                 if (confirm_val) {
-
-
-                    // var bookmarkId = $(this).val();
-
                     console.log(bookmarkId);
-
-
 
                     var token = $("meta[name='_csrf']").attr("content");
                     var header = $("meta[name='_csrf_header']").attr("content");
 
-                    // $(document).ajaxSend(function(e, xhr, options) {
-                    //     xhr.setRequestHeader(header, token);
-                    // });
                     $.ajax({
                         url: '/api/bookmarks/' + bookmarkId,
                         method: 'get',
-                        // data: JSON.stringify(json),
-                        // dataType : 'json',
-                        beforeSend: function(xhr) {
+                        async: true,
+                        contentType: "application/json",
+                        beforeSend: function (xhr) {
                             xhr.setRequestHeader(header, token);
                         },
                         success: function (data) {
 
-                            if (data == "ok") {
-                                // document.getElementById(bookmarkid).remove();
-                                window.location.href = "challenges/addform/"
-                            }
+                                window.location.href = "/challenges/addform/"
 
                         }
                         ,
-
-                        beforeSend : function(xhr){
-                            xhr.setRequestHeader(header, token);
-                        },
-
                         error: function () {
                             alert("에러닷");
                         }
