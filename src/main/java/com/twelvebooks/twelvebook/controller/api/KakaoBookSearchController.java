@@ -1,14 +1,16 @@
 package com.twelvebooks.twelvebook.controller.api;
 
+import com.twelvebooks.twelvebook.dto.SearchResultDTO;
 import com.twelvebooks.twelvebook.service.KakaoBookApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -17,15 +19,23 @@ public class KakaoBookSearchController {
     @Autowired
     KakaoBookApiService kakaoBookApiService;
 
+//    @GetMapping
+//    public Map<String, Object> searchBooks(@RequestParam("searchWord") String searchWord,
+//                                           @RequestParam(name = "target", defaultValue = "all") String target,
+//                                           @RequestParam(name = "category", defaultValue = "") String category,
+//                                           @RequestParam(name = "page", defaultValue = "1") int page) {
+//
+//        Map<String, Object> result = kakaoBookApiService.searchBooks(searchWord, target, category, page);
+//
+//        return result;
+//    }
+
     @GetMapping
-    public Map<String, Object> searchBooks(@RequestParam("searchWord") String searchWord,
-                                           @RequestParam(name = "target", defaultValue = "all") String target,
-                                           @RequestParam(name = "category", defaultValue = "") String category,
-                                           @RequestParam(name = "page", defaultValue = "1") int page) {
+    public ResponseEntity<Mono<SearchResultDTO>> searchBooks(@RequestParam(name = "searchWord") String searchWord,
+                                                                @RequestParam(name = "page", defaultValue = "1") int page ){
+        Mono<SearchResultDTO> searchResult = kakaoBookApiService.searchBooks(searchWord, page);
 
-        Map<String, Object> result = kakaoBookApiService.searchBooks(searchWord, target, category, page);
-
-        return result;
+        return new ResponseEntity<>(searchResult, HttpStatus.OK);
     }
 
 }

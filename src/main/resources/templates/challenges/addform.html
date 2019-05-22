@@ -41,7 +41,7 @@
     </div>
 
 
-    <form id="search_form" name = "search">
+    <form id="search_form" name = "search" autocomplete="off">
         <div class="col">
             <input type="text" name="searchWord" placeholder="읽을 책을 검색하세요" class="booksearch" id="searchWord">
             <input type="hidden" name="page" id="page">
@@ -224,14 +224,10 @@
             var arr1 = sdd.split('-');
             var arr2 = edd.split('-');
             var da1 = new Date(arr1[0], arr1[1] -1, arr1[2]);
-            console.log("da1 : "+da1);
             var da2 = new Date(arr2[0], arr2[1] -1, arr2[2]);
-            console.log("da2 : "+da2);
             var diff = da2 - da1;
-            console.log("diff : "+ diff);
             var cDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
-            console.log("cDay : "+ cDay);
-            console.log("kkk : "+ diff/cDay)
+
             if(sdd && edd){
                 document.getElementById('days').value = parseInt((diff/cDay))+1;
             }
@@ -247,8 +243,6 @@
             }
         });
         function bookSearch(page){
-            console.log(page);
-            console.log('hello')
             var pg = page ? page : 1;
             var form = document.getElementById("search_form");
             form.page.value = pg;
@@ -263,12 +257,12 @@
                         $(form).find("button[type=button]").text("Searching for ...");
                     },
                     success :function(res){
+                        console.log(res);
                         if(res.meta.total_count < 1) {
                             $("#books > ul").html("");
                             $("#books > #resultMessage").show();
                         }else{
                             $("#books > #resultMessage").hide();
-                            console.log(res);
                             var html = "";
                             $(res.documents)
                                 .each(
@@ -325,7 +319,7 @@
                                             + "</div>"
                                             + "</div></li>";
                                     });
-
+                            console.log("메타: "+ res.meta.is_end);
                             if (!res.meta.is_end) {
                                 html += "<li style = 'list-style: none'><button class='btn btn-dark btn-lg btn-block' onclick='bookSearch("
                                     + (pg + 1)
@@ -466,8 +460,6 @@
                         xhr.setRequestHeader(header, token);
                     }
                 })
-            // })
-
             }
 
             </script>

@@ -1,4 +1,4 @@
-package com.twelvebooks.twelvebook.Util;
+package com.twelvebooks.twelvebook.util;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;

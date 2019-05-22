@@ -1,11 +1,10 @@
-package com.twelvebooks.twelvebook.Util;
+package com.twelvebooks.twelvebook.util;
 
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
