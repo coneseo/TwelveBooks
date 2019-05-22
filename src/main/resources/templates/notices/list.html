@@ -35,7 +35,7 @@
         </table>
 
         <div sec:authorize="hasAuthority('ROLE_ADMIN')">
-            <button type="button" class="btn btn-success" style ="float:right" onclick="location.href='/notices/write'">글쓰기</button>
+            <button type="button" class="btn btn-dark" style ="float:right" onclick="location.href='/notices/write'">글쓰기</button>
         </div>
 
         <!-- 게시판 하단의 페이징 버튼 -->
@@ -45,7 +45,7 @@
 
             <li class="page-item" th:class="${noticepage.first} ? 'disabled'"  ><a class="page-link" th:href="${noticepage.first} ? '#' : @{/notices/list(page=${noticepage.number -1})}">이전</a></li>
 
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == noticepage.number +1} ? 'active'"><a class="page-link" th:text="${page}" th:href="@{/notices/list(page=${page -1})}"></a></li>
+            <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == noticepage.number +1} ? 'active'"><a class="page-link" th:text="${page}" th:href="@{/notices/list(page=${page })}"></a></li>
 
             <li class="page-item" th:class="${noticepage.last} ? 'disabled'"><a class="page-link" th:href="${noticepage.last} ? '#' : @{/notices/list(page=${noticepage.number + 1})}">다음</a></li>
         </ul>
