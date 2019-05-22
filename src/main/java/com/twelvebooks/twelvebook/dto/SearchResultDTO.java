@@ -10,5 +10,6 @@ import java.util.Map;
 @Setter
 public class SearchResultDTO {
     private List<SearchBookDTO> documents;
-    private Map<String, String> meta;
+//    private MetaDTO  meta;
+    private Map<String, Object>  meta;
 }
