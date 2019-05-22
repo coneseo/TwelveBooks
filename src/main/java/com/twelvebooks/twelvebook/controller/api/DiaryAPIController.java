@@ -31,14 +31,15 @@ public class DiaryAPIController {
         //TODO 나중에 DTO만들어서 관리하는걸로 변경하기
         if(length < 30){
             postReviewResultDto.setResult("일지는 30자 이상 작성해주세요.");
-            return new ResponseEntity<>(postReviewResultDto, HttpStatus.OK);
+            return new ResponseEntity<>(postReviewResultDto, HttpStatus.CONFLICT);
         }
 
         int count = diaryService.addDiary(diaryDto);
         if(count > 0){
-            postReviewResultDto.setResult("이미 작성된 일지 있음");
+            postReviewResultDto.setResult("이미 작성된 일지가 있습니다.");
             return new ResponseEntity<>(postReviewResultDto, HttpStatus.CONFLICT);
         }
+
         postReviewResultDto.setResult("작성완료");
         return new ResponseEntity<>(postReviewResultDto, HttpStatus.OK);
     }
@@ -48,6 +49,10 @@ public class DiaryAPIController {
         PostReviewResultDto postReviewResultDto = new PostReviewResultDto();
 
         Diary diary = diaryService.getDiaryById(id);
+        if(diary == null){
+            postReviewResultDto.setResult("존재하지 않는 다이어리입니다.");
+            return new ResponseEntity<>(postReviewResultDto, HttpStatus.NOT_FOUND);
+        }
 
         diaryService.deleteDiary(diary);
 
@@ -59,7 +64,14 @@ public class DiaryAPIController {
     public ResponseEntity<PostReviewResultDto> modifyReview(@RequestBody DiaryDto diaryDto){
         PostReviewResultDto postReviewResultDto = new PostReviewResultDto();
 
-        System.out.println("api" + diaryDto.getId());
+        char[] c = diaryDto.getContent().toCharArray();
+        int length = c.length;
+
+        if(length < 30){
+            postReviewResultDto.setResult("일지는 30자 이상 작성해주세요.");
+            return new ResponseEntity<>(postReviewResultDto, HttpStatus.CONFLICT);
+        }
+
         int update = diaryService.updateDiary(diaryDto);
 
         postReviewResultDto.setResult("수정완료");
