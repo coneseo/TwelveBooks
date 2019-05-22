@@ -25,10 +25,11 @@
             <table>
                 <thead>
                 <tr>
-                    <th scope="col" style="width: 25%"></th>
-                    <th scope="col" style="width: 25%"></th>
-                    <th scope="col" style="width: 25%"></th>
-                    <th scope="col" style="width: 25%"></th>
+                    <th>이미지</th>
+                    <th>제목</th>
+                    <th>시작일</th>
+                    <th>종료일</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody id="challenge">
@@ -68,7 +69,8 @@
                 var challengeDiv = $(' <tr data-toggle="collapse" data-target="#book' + val[i].id + '" class="clickable" border-bottom: 1px solid black;"><td><span style="padding-right: 150px;"><img style="margin-top: 50px; margin-bottom: 10px; width: 100px;" src="' + val[i].thumbnailImage + '" /></span></td>\n' +
                     '                    <td><span style="padding-right: 150px;">' + val[i].booksTitle + '</span></td>\n' +
                     '                    <td><span style="padding-right: 150px;">' + val[i].startDate + '</span></td>\n' +
-                    '                    <td><span style="padding-right: 150px;">' + val[i].endDate + '</span></td></tr>' +
+                    '                    <td><span style="padding-right: 150px;">' + val[i].endDate + '</span></td>' +
+                    '                    <td><a href="/diary/' + val[i].id + '" ><button class="btn btn-dark">상세보기</button></a></td></tr>' +
                     '                    <tr><td colspan="3"><div id="book' + val[i].id + '" class="collapse"><h3>' + days + ' 일차</h3> <textarea id="' + idtest + '" type="text" class="form-control" rows="5" name="review" minlength="30" placeholder="30자 이상을 남겨주세요"\n' +
                     '                                   title="review"></textarea><button type="submit" style="margin-top: 15px" class="btn btn-dark topBtn" onclick="postreview(\'' + idtest + '\',\'' + chalid + '\',\'' + days + '\')"> 작성</button></div></td></tr>');
                 challengeDiv.appendTo($('#challenge'));
@@ -94,8 +96,9 @@
                 var challengeDiv = $(' <tr data-toggle="collapse" data-target="#book' + val[i].id + '" class="clickable" border-bottom: 1px solid black;"><td><span style="padding-right: 150px;"><img style="margin-top: 50px; margin-bottom: 10px; width: 100px;" src="' + val[i].thumbnailImage + '" /></span></td>\n' +
                     '                    <td><span style="padding-right: 150px;">' + val[i].booksTitle + '</span></td>\n' +
                     '                    <td><span style="padding-right: 150px;">' + val[i].startDate + '</span></td>\n' +
-                    '                    <td><span style="padding-right: 150px;">' + val[i].endDate + '</span></td></tr>' +
-                    '                    <tr><td colspan="3"><div id="book' + val[i].id + '" class="collapse"><h3>' + days + ' 일차</h3> <textarea id="' + idtest + '" type="text" class="form-control" rows="5" name="review" id="review" minlength="30" placeholder="30자 이상을 남겨주세요"\n' +
+                    '                    <td><span style="padding-right: 150px;">' + val[i].endDate + '</span></td>' +
+                    '                    <td><a href="/diary/' + val[i].id + '" ><button class="btn btn-dark">상세보기</button></a></td></tr>' +
+                    '                    <tr><td colspan="3"><div id="book' + val[i].id + '" class="collapse"><h3>' + days + ' 일차</h3> <textarea id="' + idtest + '" type="text" class="form-control" rows="5" name="review" minlength="30" placeholder="30자 이상을 남겨주세요"\n' +
                     '                                   title="review"></textarea><button type="submit" style="margin-top: 15px" class="btn btn-dark topBtn" onclick="postreview(\'' + idtest + '\',\'' + chalid + '\',\'' + days + '\')"> 작성</button></div></td></tr>');
                 challengeDiv.appendTo($('#challenge'));
             }
@@ -117,7 +120,8 @@
                 var challengeDiv = $(' <tr data-toggle="collapse" data-target="#book' + val[i].id + '" class="clickable" border-bottom: 1px solid black;"><td><span style="padding-right: 150px;"><img style="margin-top: 50px; margin-bottom: 10px; width: 100px;" src="' + val[i].thumbnailImage + '" /></span></td>\n' +
                     '                    <td><span style="padding-right: 150px;">' + val[i].booksTitle + '</span></td>\n' +
                     '                    <td><span style="padding-right: 150px;">' + val[i].startDate + '</span></td>\n' +
-                    '                    <td><span style="padding-right: 150px;">' + val[i].endDate + '</span></td></tr>');
+                    '                    <td><span style="padding-right: 150px;">' + val[i].endDate + '</span></td>' +
+                    '                    <td><a href="/diary/' + val[i].id + '" ><button class="btn btn-dark">상세보기</button></a></td></tr>');
                 challengeDiv.appendTo($('#challenge'));
             }
         }
@@ -156,18 +160,17 @@
                 data: jsonData,
                 async: true,
                 contentType: "application/json",
-                error: function () {
-                    alert("이미 일지를 작성하셨습니다");
-                    return false;
-                },
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (data) {
-                    console.log(data);
                     document.getElementById(idtest).value = "";
-                    alert("일지를 작성했습니다.");
+                    alert(data.result);
 
+                },
+                error: function (res) {
+                    alert(res.responseJSON.result);
+                    return false;
                 }
             })
         }

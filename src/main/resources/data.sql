@@ -61,11 +61,14 @@ insert into challenges(id, start_date, end_date, days, visibility, book_status, 
 insert into challenges(id, start_date, end_date, days, visibility, book_status, user_id, book_id, books_title, thumbnail_image, current_day) values(15, '2019-04-23', '2019-04-27',30, 0,    '읽는중', 1, 6, '사람, 장소, 환대', 'https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F495015%3Ftimestamp%3D20190123132318',1);
 insert into challenges(id, start_date, end_date, days, visibility, book_status, user_id, book_id, books_title, thumbnail_image, current_day) values(16, '2019-03-29', '2019-04-27',30, 0,    '읽는중', 11, 4, '이것만이 자바다', 'http://www.hanbit.co.kr/data/books/B1460673937_l.jpg',1);
 
-insert into diaries(id, days, content,  challenge_id) values(1, 1, '자바 존나 어렵네',  1);
-insert into diaries(id, days, content,  challenge_id) values(2, 1, '자바 겁나 어렵네',  1);
+insert into diaries(id, days, content,  challenge_id) values(1, 1, '자바 진짜 어렵네',  1);
+insert into diaries(id, days, content,  challenge_id) values(2, 2, '자바 겁나 어렵네',  1);
 insert into diaries(id, days, content,  challenge_id) values(3, 1, '자바 지젼 어렵네',  3);
 insert into diaries(id, days, content,  challenge_id) values(4, 1, '자바 어렵네',  4);
 insert into diaries(id, days, content,  challenge_id) values(5, 1, '자바 존나 쉽네',  5);
+insert into diaries(id, days, content,  challenge_id) values(6, 3, '자바 넘모 어렵네',  1);
+insert into diaries(id, days, content,  challenge_id) values(7, 4, '자바 심각하게 어렵네',  1);
+
 
 insert into notices values(1,'이것이 자바냐',now(),'이것이 자바다',12);
 insert into notices values(2,'이것이 자바니',now(),'이것이 자바다2',12);

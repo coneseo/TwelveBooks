@@ -12,8 +12,8 @@
     <div class="container-fluid text-center" style="margin-bottom: 25px;">
         <div class="container">
             <div class="row mgTp">
-                <form class="col-md-6 offset-md-3" method="post" action="/users/join">
-                    <form method="post" th:action="@{/users/join}" th:object="${userJoinForm}" action="#">
+                <form class="col-md-6 offset-md-3" method="post" action="/users/join" autocomplete="off">
+                    <form method="post" th:action="@{/users/join}" th:object="${userJoinForm}" action="#" autocomplete="off">
                         <h3 class="title">회원가입</h3>
                         <hr class="divisor">
                         <div class="form-group" style="margin-top: 40px; margin-bottom: 20px;">
