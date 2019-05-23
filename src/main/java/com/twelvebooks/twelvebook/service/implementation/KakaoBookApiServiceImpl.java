@@ -14,8 +14,10 @@ public class KakaoBookApiServiceImpl implements KakaoBookApiService {
     @Autowired
     private RestProperties restProperties;
 
+//    @Autowired
+//    WebClient.Builder webClientBuild;
     @Autowired
-    WebClient.Builder webClientBuild;
+    WebClient webClient;
 
 //    private static final String API_BOOK_URL = "https://dapi.kakao.com/v3/search/book";
 
@@ -43,7 +45,7 @@ public class KakaoBookApiServiceImpl implements KakaoBookApiService {
 
     @Override
     public Mono<SearchResultDTO> searchBooks(String searchWord, int page) {
-        WebClient webClient = webClientBuild.baseUrl("https://dapi.kakao.com").build();
+//        WebClient webClient = webClientBuild.baseUrl("https://dapi.kakao.com").build();
         Mono<SearchResultDTO> searchResult = webClient.get().uri("/v3/search/book?query=" + searchWord + "&page="+page)
                 .header("Authorization", "KakaoAK " + restProperties.getProperty("admin.booksearch"))
                 .retrieve()
