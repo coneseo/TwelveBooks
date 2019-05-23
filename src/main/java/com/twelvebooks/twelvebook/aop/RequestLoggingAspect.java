@@ -1,9 +1,11 @@
 package com.twelvebooks.twelvebook.aop;
 
 import com.google.common.base.Joiner;
+import com.twelvebooks.twelvebook.controller.api.SlackAPIController;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -16,6 +18,9 @@ import java.util.stream.Collectors;
 @Slf4j
 //TODO 기본적인 요청로깅 외에 에러나 디버그 로그남기기
 public class RequestLoggingAspect {
+
+    @Autowired
+    private SlackAPIController slackAPIController;
 
     //paramMap을 스트링으로 변환시켜주는 메서드
     //stream().map()를 사용하여 변환시켜준다.

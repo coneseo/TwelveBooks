@@ -71,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf()
                 .ignoringAntMatchers("/h2-console/**")
+                .ignoringAntMatchers("/api/slack/**")
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/users/login")
