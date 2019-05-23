@@ -112,6 +112,12 @@
             <version>1.4.199</version>
             <scope>runtime</scope>
         </dependency>
+        <!-- 슬랙 API -->
+        <dependency>
+            <groupId>net.gpedro.integrations.slack</groupId>
+            <artifactId>slack-webhook</artifactId>
+            <version>1.4.0</version>
+        </dependency>
 
         <dependency>
             <groupId>io.projectreactor</groupId>
