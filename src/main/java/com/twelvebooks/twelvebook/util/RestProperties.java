@@ -5,6 +5,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -16,12 +17,12 @@ public class RestProperties {
         props = new Properties();
         Resource resource = new ClassPathResource("rest.properties");
         InputStream is = null;
+
         try{
-            is = getClass().getResourceAsStream("/rest.properties");
+//            is = getClass().getResourceAsStream("/rest.properties");
+            is = new FileInputStream(resource.getFile());
             props.load(is);
             is.close();
-//            is = getClass().getResourceAsStream("/resources/rest.properties");
-//            props.load(is);
         }catch(Exception e){
             e.printStackTrace();
         }finally{
