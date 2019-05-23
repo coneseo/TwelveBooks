@@ -56,6 +56,9 @@ public class RequestLoggingAspect {
             long end = System.currentTimeMillis();
             log.info("Request: {} {}{} < {} ({}ms)", request.getMethod(), request.getRequestURI(),
                     params, request.getRemoteHost(), end - start);
+
+            
+
         }
     }
     @AfterThrowing (pointcut = "execution(* com.twelvebooks.twelvebook.controller.api.*.*(..))", throwing = "ex")
