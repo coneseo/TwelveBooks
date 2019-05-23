@@ -14,6 +14,24 @@
             <img style="width: 250px; margin-bottom: 55px;" th:src="${challenge.thumbnailImage}"/>
             <span style="padding-left: 10%; font-size: 35px;" th:text="${challenge.booksTitle}";></span>
             <span style="padding-left: 2%; font-size: 35px;" th:text="${challenge.bookStatus}";></span>
+
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    </thead>
+                    <tbody id="dailyCheck">
+
+                    </tbody>
+                </table>
+            </div>
+
             <div th:each="diary : ${diary}">
                 <div th:id="${diary.id}">
                     <h4><b>Day: <span th:text="${diary.days}"></span></b></h4>
@@ -29,6 +47,9 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         $(document).ready(function() {
+            var totalDays =/*[[${challenge.days}]]*/ [];
+
+
             $('.form-control').attr('disabled','disabled');
         });
 
