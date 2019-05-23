@@ -40,7 +40,11 @@ public class NoticeController {
     private NoticeService noticeService;
 
     @GetMapping("/list")
-    public String noticeList(Model model,@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC,size = 10 ) Pageable pageable){
+    public String noticeList(Model model,@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10 ) Pageable pageable){
+
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, 10,new Sort(Sort.Direction.DESC, "id"));
+
 
         Page<Notice> noticePage = noticeRepository.findAll(pageable);
         model.addAttribute("noticepage", noticePage);

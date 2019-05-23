@@ -23,12 +23,12 @@
         <H4 style = "padding-left: 3%">내용</H4>
         <div class = "container">
                     <span th:text="${notice.content}">content</span><br><br>
-        </div>
+        </div>${notice.content}
         <div style=" float:right;">
         <button  type="cancle"  class="btn btn-dark" onclick="location.href='/notices/list'">목록</button>
         <div style=" float:left; padding-right: 4px" sec:authorize="hasAuthority('ROLE_ADMIN')" >
-            <a th:href="@{'/notices/modify/' + ${notice.id}}"><button type="button" class="btn btn-success" >수정</button></a>
-            <a th:href="@{'/notices/delete/' + ${notice.id}}"><button type="button" class="btn btn-success" >삭제</button></a>
+            <a th:href="@{'/notices/modify/' + ${notice.id}}"><button type="button" class="btn btn-dark" >수정</button></a>
+            <a th:href="@{'/notices/delete/' + ${notice.id}}"><button type="button" class="btn btn-dark" >삭제</button></a>
         </div>
         </div>
 
