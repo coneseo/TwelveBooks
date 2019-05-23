@@ -15,12 +15,12 @@ public class RestProperties {
 
     public RestProperties(){
         props = new Properties();
-        Resource resource = new ClassPathResource("rest.properties");
+//        Resource resource = new ClassPathResource("rest.properties");
         InputStream is = null;
 
         try{
-//            is = getClass().getResourceAsStream("/rest.properties");
-            is = new FileInputStream(resource.getFile());
+            is = getClass().getResourceAsStream("/rest.properties");
+//            is = new FileInputStream(resource.getFile());
             props.load(is);
             is.close();
         }catch(Exception e){
