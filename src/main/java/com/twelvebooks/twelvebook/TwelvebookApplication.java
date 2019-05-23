@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 //@EnableAspectAutoProxy를 명시하면 Spring AOP를 사용하기 위한 첫 준비가 끝난다.
 //@EnableAspectAutoProxy은 XML 기반의 ApplicationContext 설정에서의 <aop:aspectj-autoproxy />와 동일한 기능을 한다.
+//@EnableScheduling을 명시하면 @Scheduled를 사용하기 위한 준비가 끝난다.
 public class TwelvebookApplication {
 
     public static void main(String[] args) {

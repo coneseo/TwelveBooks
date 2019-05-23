@@ -1,4 +1,4 @@
-package com.twelvebooks.twelvebook.Util;
+package com.twelvebooks.twelvebook.util;
 
 
 import org.springframework.core.io.ClassPathResource;
@@ -15,14 +15,14 @@ public class RestProperties {
 
     public RestProperties(){
         props = new Properties();
-        Resource resource = new ClassPathResource("rest.properties");
+//        Resource resource = new ClassPathResource("rest.properties");
         InputStream is = null;
+
         try{
             is = getClass().getResourceAsStream("/rest.properties");
+//            is = new FileInputStream(resource.getFile());
             props.load(is);
             is.close();
-//            is = getClass().getResourceAsStream("/resources/rest.properties");
-//            props.load(is);
         }catch(Exception e){
             e.printStackTrace();
         }finally{
