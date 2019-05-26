@@ -11,19 +11,57 @@
 <div layout:fragment="content">
     <div class="container-fluid text-left" style="margin-bottom: 25px; width: 100%">
         <div class="container">
-            <img style="width: 250px; margin-bottom: 55px;" th:src="${challenge.thumbnailImage}"/>
-            <span style="padding-left: 10%; font-size: 35px;" th:text="${challenge.booksTitle}";></span>
-            <span style="padding-left: 2%; font-size: 35px;" th:text="${challenge.bookStatus}";></span>
+            <img style="width: 250px; margin-bottom: 55px; width: 125px" th:src="${challenge.thumbnailImage}"/>
+            <span style="padding-left: 10%; font-size: 15px;" th:text="${challenge.booksTitle}";></span>
+            <span style="padding-left: 2%; font-size: 15px;" th:text="${challenge.bookStatus}";></span>
+
+            <div id="alertModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        </div>
+                        <div class="modal-body">
+                            <p></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-default" data-dismiss="modal">
+                                닫기
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <div id="deleteModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        </div>
+                        <div class="modal-body">
+                            <p></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-default" data-dismiss="modal" id="delete">
+                                삭제
+                            </button>
+                            <button class="btn btn-default" data-dismiss="modal">
+                                취소
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
 
             <div>
                 <table>
                     <thead>
                     <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody id="dailyCheck">
@@ -48,8 +86,6 @@
         /*<![CDATA[*/
         $(document).ready(function() {
             var totalDays =/*[[${challenge.days}]]*/ [];
-
-
             $('.form-control').attr('disabled','disabled');
         });
 
@@ -82,11 +118,18 @@
                         xhr.setRequestHeader(header, token);
                     },
                     error: function (res) {
-                        alert(res.responseJSON.result);
+                        var message = res.responseJSON.result;
+                        $('#alertModal').find('.modal-body p').text(message);
+                        $('#alertModal').modal('show');
+                        document.getElementById(id).disabled = false;
                         return false;
                     },
                     success: function (data) {
-                        alert(data.result);
+                        var message = data.result;
+                        $('#alertModal').find('.modal-body p').text(message);
+                        $('#alertModal').modal('show');
+                        document.getElementById(id).disabled = true;
+                        return true;
 
                     }
                 })
@@ -98,23 +141,30 @@
         function deleteReview(id) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
-            $.ajax({
-                type: 'delete',
-                url: '/api/diaries/'+ id,
-                async: true,
-                contentType: "application/json",
-                error: function (err) {
-                    console.log(err.toString());
-                    alert("서버가 응답하지 않습니다.");
-                    return false;
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                },
-                success: function (data) {
-                    console.log(data);
-                    document.getElementById(id).remove();
-                }
+            $('#deleteModal').find('.modal-body p').text('정말 삭제할건가요?8ㅅ8');
+            $('#deleteModal').modal('show').on('click', '#delete', function(e) {
+                $.ajax({
+                    type: 'delete',
+                    url: '/api/diaries/'+ id,
+                    async: true,
+                    contentType: "application/json",
+                    error: function (res) {
+                        var message = res.responseJSON.result;
+                        $('#alertModal').find('.modal-body p').text(message);
+                        $('#alertModal').modal('show')
+                        return false;
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        var message = data.result;
+                        $('#alertModal').find('.modal-body p').text(message);
+                        $('#alertModal').modal('show')
+                        document.getElementById(id).remove();
+                    }
+                })
             })
         }
         /*]]>*/

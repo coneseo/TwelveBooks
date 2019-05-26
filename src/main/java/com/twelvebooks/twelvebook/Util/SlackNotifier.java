@@ -1,4 +1,4 @@
-package com.twelvebooks.twelvebook.Util;
+package com.twelvebooks.twelvebook.util;
 
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
