@@ -1,7 +1,7 @@
 package com.twelvebooks.twelvebook.controller.api;
 
 
-import com.twelvebooks.twelvebook.Util.SlackNotifier;
+import com.twelvebooks.twelvebook.util.SlackNotifier;
 import com.twelvebooks.twelvebook.dto.SlackAPIDto;
 import lombok.RequiredArgsConstructor;
 import net.gpedro.integrations.slack.SlackApi;
