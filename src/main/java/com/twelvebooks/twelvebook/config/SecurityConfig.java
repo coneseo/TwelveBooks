@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/bookmark/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/bookmarks/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/books/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/searchs/**").hasAnyRole("USER", "ADMIN")
 
                 .antMatchers("/challenges/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().fullyAuthenticated()
