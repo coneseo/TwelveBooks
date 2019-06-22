@@ -8,6 +8,6 @@
 
 * 핵심 기능(Core functions) : 책 정보와 기간 등록, 매일 써야하는 책 후기, 완료시 한눈에 보는 나의 책 일기 제공
 * Docs : https://drive.google.com/drive/folders/1kSGMMMebnr1PHI8ZC62SyBFO6M-kGak4
-* Languages & Tools : Java Spring, MySQL
+* Languages & Tools : Java, SpringBoot, MySQL, H2, AWS
 * Demo Website : 
 * Images
